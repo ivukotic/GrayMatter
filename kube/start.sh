@@ -10,10 +10,10 @@ kubectl delete secret -n graymatter es-secret
 kubectl create secret -n graymatter generic es-secret --from-file=es_conf=secrets/elasticsearch.json
 
 echo "Deploying frontend service"
-kubectl create -f gce-service.yaml
+kubectl create -f service.yaml
 
 echo "Deploying server"
-kubectl create -f gce-frontend.yaml
+kubectl create -f frontend.yaml
 
 #echo "label a node as ES capable"
 #kubectl label nodes gke-servicex-default-pool-d4908f66-xmc6 es=capable

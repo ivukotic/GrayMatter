@@ -4,11 +4,10 @@ console.log('ServiceX server starting ... ');
 const fs = require('fs');
 
 const express = require('express');
-const session = require('express-session');
 const http = require('http');
-const rRequest = require('request');
+// const rRequest = require('request');
 
-const config = require('./config/config.json');
+const config = require('./config.json');
 
 let secretsPath = '/etc/';
 
