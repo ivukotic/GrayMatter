@@ -1,0 +1,67 @@
+POST /_template/graymatter
+{
+  "index_patterns": "graymatter",
+  "mappings": {
+    "docs": {
+      "properties": {
+        "name": {
+          "type": "keyword"
+        },
+        "description": {
+          "type": "keyword"
+        },
+        "dataset": {
+          "type": "keyword"
+        },
+        "dataset_size": {
+          "type": "long"
+        },
+        "dataset_files": {
+          "type": "integer"
+        },
+        "dataset_events": {
+          "type": "long"
+        },
+        "columns": {
+          "type": "keyword"
+        },
+        "events": {
+          "type": "long"
+        },
+        "events_transformed": {
+          "type": "long"
+        },
+        "events_served": {
+          "type": "long"
+        },
+        "events_processed": {
+          "type": "long"
+        },
+        "created_at": {
+          "type": "date"
+        },
+        "modified_at": {
+          "type": "date"
+        },
+        "user": {
+          "type": "keyword"
+        },
+        "status": {
+          "type": "keyword"
+        },
+        "info": {
+          "type": "keyword"
+        },
+        "token": {
+          "type": "keyword"
+        },
+        "kafka_hwm": {
+          "type": "long"
+        },
+        "kafka_lwm": {
+          "type": "long"
+        }
+      }
+    }
+  }
+}

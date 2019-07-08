@@ -1,4 +1,4 @@
-* __Pop manager__
+* __Pop server__
     * Initializes/Saves/Restores individuals
     * Mates and mutates individuals
 * __T__

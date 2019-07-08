@@ -1,0 +1,30 @@
+{
+  "name": "pop_generator",
+  "version": "1.0.0",
+  "description": "Generate individuals",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ivukotic/GrayMatter.git"
+  },
+  "keywords": [
+    "AI",
+    "GA",
+    "General Inteligence"
+  ],
+  "author": "Ilija Vukotic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ivukotic/GrayMatter/issues"
+  },
+  "homepage": "https://github.com/ivukotic/GrayMatter#readme",
+  "dependencies": {
+    "elasticsearch": "^16.2.0",
+    "express": "^4.17.1",
+    "https": "^1.0.0"
+  }
+}

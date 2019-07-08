@@ -1,0 +1,35 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: graymatter-service
+  namespace: graymatter
+  labels:
+    k8s-app: graymatter
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80
+  selector:
+    k8s-app: graymatter
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: graymatter-ingress
+  namespace: graymatter
+spec:
+  tls:
+  - hosts:
+    - graymatter.vukotic.me
+    secretName: cert-secret
+  rules:
+    - host: graymatter.vukotic.me
+      http:
+        paths:
+        - path: /*
+          backend:
+            serviceName: graymatter-service
+            servicePort: 80
