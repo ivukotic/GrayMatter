@@ -1,0 +1,7 @@
+Universe
+
+Brain
+    add removeNeurons - ones that have no synapses?
+    
+Neuron
+    add remove synapses - ones that had were flatlining.
