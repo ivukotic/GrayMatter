@@ -2,6 +2,7 @@ import random
 import numpy as np
 import pandas as pd
 from brain import Brain
+from code import Code
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -28,7 +29,9 @@ class Universe:
         return x * 2 + y * 2
 
     def create_brain(self):
-        b = Brain('br1')
+        c = Code()
+        c.initial_generation()
+        b = Brain('br1', c)
         b.setPosition(random.randint(0, self.sx), random.randint(0, self.sy))
         self.population.append(b)
 

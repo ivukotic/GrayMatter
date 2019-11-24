@@ -26,18 +26,16 @@ class Brain():
     def generate_neurons(self):
         # done cell by cell
         cell = 0
-        for _i in self.dimensions[0]:
-            for _j in self.dimensions[1]:
-                for _k in self.dimensions[2]:
+        for _i in range(self.dimensions[0]):
+            for _j in range(self.dimensions[1]):
+                for _k in range(self.dimensions[2]):
                     ntype_code = self.neuron_types[self.structure[cell]]
                     for _d in range(ntype_code['density']):
                         self.neurons.append(Neuron(ntype_code, [_i, _j, _k]))
                     cell += 1
 
         # synapse length is given by cieling of distance between cubes.
-        for _i in range(self.neurons):
-            self.neurons.append(Neuron())
-
+        XXXXXXXXXXXXXX
         for _i in range(n_neurons):
             for _j in range(_i + 1, n_neurons):
                 if random.random() > self.interconnectedness:

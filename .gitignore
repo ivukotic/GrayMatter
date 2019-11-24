@@ -2,6 +2,8 @@ secrets
 node_modules
 Intermediate
 
+__pycache__
+
 # Visual Studio 2015 user specific files
 .vs/
 
