@@ -31,3 +31,10 @@ Deriving rules for the quick learning Neural Network self-organization.
 
     synapse
     parameters: destination neuron, distance, weight, sensitivity, sensitivity decay
+
+## technical org.
+    one node runs one population
+    populations coordinated externaly - from time to time a couple of individuals exchanged between randomly selected populations
+    each individual is a thread
+    each brain loops through neurons once per tick and puts them into new state. Each synapse has a fixed list of events comming its way. it is as long as the distance between the neurons (in ticks).
+    

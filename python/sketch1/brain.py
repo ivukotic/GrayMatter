@@ -1,22 +1,41 @@
 """ brain doc """
 import random
 from neuron import Neuron, Synapse
+from code import Code
+
 
 class Brain():
 
     """ for now simply add neurons. later this will need GA birth from two parents."""
 
-    def __init__(self, name, n_neurons=5, interconnectedness=0.9):
+    def __init__(self, name, gencode):
+        print('creating brain', name)
         self.name = name
         self.neurons = []
-        self.food = 128
-        self.x = 0
-        self.y = 0
-        self.direction = [random.randint(0, 1), random.randint(0, 1)]
-        self.interconnectedness = interconnectedness
-        print('creating brain')
+        self.code = gencode.brain
+        self.dimensions = self.code['dimensions']
+        self.interconnectedness = self.code['interconnectedness']
+        self.structure = self.code['structure']
+        self.neuron_types = gencode.neuron_types
 
-        for _i in range(n_neurons):
+        self.food = 128
+        self.position = (0, 0)
+        self.direction = [random.randint(0, 1), random.randint(0, 1)]
+        self.generate_neurons()
+
+    def generate_neurons(self):
+        # done cell by cell
+        cell = 0
+        for _i in self.dimensions[0]:
+            for _j in self.dimensions[1]:
+                for _k in self.dimensions[2]:
+                    ntype_code = self.neuron_types[self.structure[cell]]
+                    for _d in range(ntype_code['density']):
+                        self.neurons.append(Neuron(ntype_code, [_i, _j, _k]))
+                    cell += 1
+
+        # synapse length is given by cieling of distance between cubes.
+        for _i in range(self.neurons):
             self.neurons.append(Neuron())
 
         for _i in range(n_neurons):
@@ -30,11 +49,10 @@ class Brain():
         return self.food
 
     def getPosition(self):
-        return self.x, self.y
+        return self.position
 
     def setPosition(self, x, y):
-        self.x = x
-        self.y = y
+        self.position = (x, y)
 
     def addFood(self, food):
         self.food += food

@@ -1,5 +1,7 @@
 """ synapse doc """
 
+from code import Code
+
 
 class Synapse:
     """ """
@@ -20,10 +22,12 @@ class Synapse:
 class Neuron:
     """ """
 
-    def __init__(self):
+    def __init__(self, gencode, cube):
+        self.gencode = gencode
+        self.cube = cube
         self.current_threshold = 128
-        self.leakage = 1
-        self.random_signal_probability = .0001
+        self.leakage = gencode["leakage"]
+        self.random_signal_probability = gencode["random_signal_probability"]
         self.synapses = []
         self.input = 0
         self.output = 0
@@ -41,5 +45,5 @@ class Neuron:
         return 0
 
     def tick(self):
-        
+
         pass
