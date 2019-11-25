@@ -1,6 +1,7 @@
 secrets
 node_modules
 Intermediate
+*.png
 
 __pycache__
 

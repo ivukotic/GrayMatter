@@ -23,7 +23,7 @@ class Neuron:
     """ """
 
     def __init__(self, gencode, cube):
-        self.gencode = gencode
+        self.code = gencode
         self.cube = cube
         self.current_threshold = 128
         self.leakage = gencode["leakage"]

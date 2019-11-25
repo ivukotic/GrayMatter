@@ -22,12 +22,11 @@ Deriving rules for the quick learning Neural Network self-organization.
     brain.py
     has neurons. creates/removes them. it has synapses. 
     has quality that it exposes to other individuals.  
-    parameter: interconnectedness. 
     ticks neurons.
     
     neuron.py
     has synapses. can remove synapses.
-    parameters: treshold, leakage, random signal prob. 
+    parameters: treshold, leakage, n_synapses, dendrite_length, random signal prob. 
 
     synapse
     parameters: destination neuron, distance, weight, sensitivity, sensitivity decay
@@ -37,4 +36,4 @@ Deriving rules for the quick learning Neural Network self-organization.
     populations coordinated externaly - from time to time a couple of individuals exchanged between randomly selected populations
     each individual is a thread
     each brain loops through neurons once per tick and puts them into new state. Each synapse has a fixed list of events comming its way. it is as long as the distance between the neurons (in ticks).
-    
+

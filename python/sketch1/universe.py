@@ -1,4 +1,6 @@
 import random
+import threading
+
 import numpy as np
 import pandas as pd
 from brain import Brain
@@ -12,6 +14,7 @@ plt.rcParams['figure.figsize'] = [8.0, 8.0]
 class Universe:
     def __init__(self, sx=200, sy=200, population_size=10):
         self.apsolute_time = 0
+        self.time_event = threading.Event()
         self.sx = sx
         self.sy = sy
         self.population_size = population_size
@@ -21,25 +24,28 @@ class Universe:
         # print(self.food.head())
         self.population = []
         for _i in range(population_size):
-            self.create_brain()
+            self.create_brain('Br_' + str(_i))
+            
+        self.time_event.set()
         for _t in range(9):
             self.tick()
+        self.time_event.clear()
 
     def foodShape(x, y):
         return x * 2 + y * 2
 
-    def create_brain(self):
+    def create_brain(self, name):
         c = Code()
         c.initial_generation()
-        b = Brain('br1', c)
+        b = Brain(name, c, self.time_event)
         b.setPosition(random.randint(0, self.sx), random.randint(0, self.sy))
         self.population.append(b)
+        b.start()
 
     def updateStates(self):
         toRemove = []
         for bi, b in enumerate(self.population):
             # b.prnt()
-            b.tick()
             if b.getQuality() <= 0:
                 toRemove.append(bi)
             x, y = b.getPosition()

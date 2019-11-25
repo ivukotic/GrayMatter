@@ -10,13 +10,15 @@ class Code():
 
         self.brain = {
             "dimensions": (2, 2, 2),  # brain size in cubes.
-            "interconnectedness": .9,
             "structure": [0, 0, 0, 0, 0, 0, 0, 0]  # neuron type for each cube
         }
 
         self.neuron_types = [
             {
                 "density": 1,  # neurons in each cell
+                "synapses": 5,
+                # probability of having dendron_length of 0, 1, 2 cubes.
+                "dendron_length": [0.5, 0.3, 0.2],  # does not have to be normalized, but each must be <1.
                 "leakage": 1,
                 "random_signal_probability": .0001
             }
@@ -40,6 +42,6 @@ class Code():
         pass
 
     def prnt(self):
-        print('code:', self.gencode)
+        print('code:', self.encode())
         print('\t brain:', self.brain)
-        print('\t neurons:', self.neuron)
+        print('\t neurons:', self.neuron_types)

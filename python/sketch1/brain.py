@@ -1,20 +1,28 @@
 """ brain doc """
 import random
-from neuron import Neuron, Synapse
+import math
+import threading
+import logging
+
 from code import Code
+from neuron import Neuron, Synapse
 
 
-class Brain():
+logging.basicConfig(level=logging.DEBUG, format='(%(threadName)-10s) %(message)s', )
+
+
+class Brain(threading.Thread):
 
     """ for now simply add neurons. later this will need GA birth from two parents."""
 
-    def __init__(self, name, gencode):
+    def __init__(self, name, gencode, time_event):
+        threading.Thread.__init__(self, group=None, target=None, name=name)
         print('creating brain', name)
         self.name = name
+        self.time_event = time_event
         self.neurons = []
         self.code = gencode.brain
         self.dimensions = self.code['dimensions']
-        self.interconnectedness = self.code['interconnectedness']
         self.structure = self.code['structure']
         self.neuron_types = gencode.neuron_types
 
@@ -24,7 +32,7 @@ class Brain():
         self.generate_neurons()
 
     def generate_neurons(self):
-        # done cell by cell
+        # done cube by cube
         cell = 0
         for _i in range(self.dimensions[0]):
             for _j in range(self.dimensions[1]):
@@ -35,12 +43,25 @@ class Brain():
                     cell += 1
 
         # synapse length is given by cieling of distance between cubes.
-        XXXXXXXXXXXXXX
-        for _i in range(n_neurons):
-            for _j in range(_i + 1, n_neurons):
-                if random.random() > self.interconnectedness:
-                    continue
-                self.neurons[_i].add_synapse(Synapse(neuron=self.neurons[_j], weight=random.random()))
+        n_neurons = len(self.neurons)
+        for isn, source_neuron in enumerate(self.neurons):
+            sc = source_neuron.cube
+            for syn in range(source_neuron.code['synapses']):
+                while(True):
+                    idn = random.randint(0, n_neurons - 1)
+                    if idn == isn:
+                        continue
+                    destination_neuron = self.neurons[idn]
+                    dc = destination_neuron.cube
+                    distance = math.ceil(pow(
+                        (dc[0] - sc[0]) * (dc[0] - sc[0]) +
+                        (dc[1] - sc[1]) * (dc[1] - sc[1]) +
+                        (dc[2] - sc[2]) * (dc[2] - sc[2]), 0.5))
+                    prob_conn = random.random()
+                    if prob_conn > source_neuron.code['dendron_length'][distance]:
+                        continue
+                    source_neuron.add_synapse(Synapse(destination_neuron, weight=random.random()))
+                    break
 
     def getQuality(self):
         """ should return quality when asked by other brains. for start just food reserve. """
@@ -61,12 +82,15 @@ class Brain():
     def removeNeurons(self):
         return
 
-    def tick(self):
-        self.neurons[0].addInput()
-        for n in self.neurons:
-            n.tick()
-        self.direction = [self.neurons[-1].getOutput(), self.neurons[-2].getOutput()]
-        self.food -= 1
+    def run(self):
+        self.time_event.wait()
+        while self.time_event.isSet():
+            logging.debug('ticking...')
+            self.neurons[0].addInput()
+            for n in self.neurons:
+                n.tick()
+            self.direction = [self.neurons[-1].getOutput(), self.neurons[-2].getOutput()]
+            self.food -= 1
 
     def prnt(self):
         print('q', self.getPosition(), self.getQuality())
