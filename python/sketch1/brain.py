@@ -13,13 +13,15 @@ logging.basicConfig(level=logging.DEBUG, format='(%(threadName)-10s) %(message)s
 
 class Brain(threading.Thread):
 
+    actions = []  # class variable. used to return
     """ for now simply add neurons. later this will need GA birth from two parents."""
 
-    def __init__(self, name, gencode, time_event):
+    def __init__(self, name, gencode, start_event, continue_event):
         threading.Thread.__init__(self, group=None, target=None, name=name)
         print('creating brain', name)
         self.name = name
-        self.time_event = time_event
+        self.start_event = start_event
+        self.continue_event = continue_event
         self.neurons = []
         self.code = gencode.brain
         self.dimensions = self.code['dimensions']
@@ -46,7 +48,7 @@ class Brain(threading.Thread):
         n_neurons = len(self.neurons)
         for isn, source_neuron in enumerate(self.neurons):
             sc = source_neuron.cube
-            for syn in range(source_neuron.code['synapses']):
+            for _syn in range(source_neuron.code['synapses']):
                 while(True):
                     idn = random.randint(0, n_neurons - 1)
                     if idn == isn:
@@ -83,14 +85,18 @@ class Brain(threading.Thread):
         return
 
     def run(self):
-        self.time_event.wait()
-        while self.time_event.isSet():
-            logging.debug('ticking...')
+        while True:
+            self.start_event.wait(5)
+            if not self.start_event.isSet():
+                break  # to kill the thread.
+            logging.debug('tick.')
             self.neurons[0].addInput()
             for n in self.neurons:
                 n.tick()
             self.direction = [self.neurons[-1].getOutput(), self.neurons[-2].getOutput()]
             self.food -= 1
+            Brain.actions.append(self.food)
+            self.continue_event.wait()
 
     def prnt(self):
         print('q', self.getPosition(), self.getQuality())

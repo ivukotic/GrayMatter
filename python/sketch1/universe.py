@@ -14,7 +14,8 @@ plt.rcParams['figure.figsize'] = [8.0, 8.0]
 class Universe:
     def __init__(self, sx=200, sy=200, population_size=10):
         self.apsolute_time = 0
-        self.time_event = threading.Event()
+        self.start_event = threading.Event()
+        self.continue_event = threading.Event()
         self.sx = sx
         self.sy = sy
         self.population_size = population_size
@@ -25,11 +26,9 @@ class Universe:
         self.population = []
         for _i in range(population_size):
             self.create_brain('Br_' + str(_i))
-            
-        self.time_event.set()
+
         for _t in range(9):
             self.tick()
-        self.time_event.clear()
 
     def foodShape(x, y):
         return x * 2 + y * 2
@@ -37,12 +36,17 @@ class Universe:
     def create_brain(self, name):
         c = Code()
         c.initial_generation()
-        b = Brain(name, c, self.time_event)
+        b = Brain(name, c, self.start_event, self.continue_event)
         b.setPosition(random.randint(0, self.sx), random.randint(0, self.sy))
         self.population.append(b)
         b.start()
 
     def updateStates(self):
+        while True:
+            if len(Brain.actions) == self.population_size:
+                break
+        Brain.actions.clear()
+        print('do actual collection')
         toRemove = []
         for bi, b in enumerate(self.population):
             # b.prnt()
@@ -69,8 +73,13 @@ class Universe:
             del toRemove[i]
 
     def tick(self):
+
+        self.continue_event.clear()
+        self.start_event.set()
         self.apsolute_time += 1
         self.updateStates()
+        self.start_event.clear()
+        self.continue_event.set()
         print('Universe ticked:', self.apsolute_time)
         if not self.apsolute_time % 2:
             self.showUniverse()
