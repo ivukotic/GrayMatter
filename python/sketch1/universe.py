@@ -5,10 +5,8 @@ import numpy as np
 import pandas as pd
 from brain import Brain
 from code import Code
-import matplotlib.pyplot as plt
-import seaborn as sns
 
-plt.rcParams['figure.figsize'] = [8.0, 8.0]
+from tkinter import *
 
 
 class Universe:
@@ -18,20 +16,25 @@ class Universe:
         self.continue_event = threading.Event()
         self.sx = sx
         self.sy = sy
+        self.food = pd.DataFrame(np.fromfunction(lambda x, y: x * 2 + y * 2, [self.sx, self.sy]))
         self.population_size = population_size
-        self.food = pd.DataFrame()
-        data = np.fromfunction(Universe.foodShape, [sx, sy])
-        self.food = pd.DataFrame(data)
-        # print(self.food.head())
         self.population = []
         for _i in range(population_size):
             self.create_brain('Br_' + str(_i))
 
+        self.init_graphics()
+
         for _t in range(9):
             self.tick()
 
-    def foodShape(x, y):
-        return x * 2 + y * 2
+    def init_graphics(self):
+        self.canvas = Canvas(tk, width=self.sx, height=self.sy)
+        self.canvas.pack()
+        self.balls = []
+        for b in self.population:
+            (x, y) = b.getPosition()
+            self.balls.append(self.canvas.create_oval(x - 2, y - 2, x + 2, y + 2))
+        tk.update()
 
     def create_brain(self, name):
         c = Code()
@@ -88,20 +91,16 @@ class Universe:
         ax = []
         ay = []
         asize = []
-        for b in self.population:
-            # print(b)
+        for bi, b in enumerate(self.population):
             x, y = b.getPosition()
-            ax.append(x)
-            ay.append(y)
-            asize.append(b.getQuality())
-        sns.heatmap(self.food, annot=False, cbar=False)
-        sns.scatterplot(x=ax, y=ay, size=asize, legend=False)  # , annot=False)
-        plt.xticks([])
-        plt.yticks([])
-        plt.tight_layout(pad=0)
-        plt.show(block=False)
-        plt.savefig('un.' + str(self.apsolute_time) + '.png')
+            size = b.getQuality()
+            self.canvas.coords(self.balls[bi], x - 2, y - 2, x + 2, y + 2)
+        tk.update()
 
 
 if __name__ == "__main__":
+
+    tk = Tk()
+    tk.title("Universe")
+    # tk.mainloop()
     un = Universe()

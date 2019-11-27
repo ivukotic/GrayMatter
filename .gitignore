@@ -82,3 +82,5 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+python/sketch1/__pycache__/brain.cpython-36.pyc
+python/sketch1/__pycache__/neuron.cpython-36.pyc
