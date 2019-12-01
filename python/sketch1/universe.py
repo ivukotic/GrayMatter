@@ -12,6 +12,7 @@ from tkinter import *
 class Universe:
     def __init__(self, sx=200, sy=200, population_size=10):
         self.apsolute_time = 0
+        # these two events start/restart brain threads processing.
         self.start_event = threading.Event()
         self.continue_event = threading.Event()
         self.sx = sx
@@ -45,6 +46,7 @@ class Universe:
         b.start()
 
     def updateStates(self):
+        #wait until all brains delivered tick result. 
         while True:
             if len(Brain.actions) == self.population_size:
                 break

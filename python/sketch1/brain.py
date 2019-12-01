@@ -29,6 +29,7 @@ class Brain(threading.Thread):
         self.neuron_types = gencode.neuron_types
 
         self.food = 128
+        self.age = 0
         self.position = (0, 0)
         self.direction = [random.randint(0, 1), random.randint(0, 1)]
         self.generate_neurons()
@@ -44,15 +45,17 @@ class Brain(threading.Thread):
                         self.neurons.append(Neuron(ntype_code, [_i, _j, _k]))
                     cell += 1
 
-        # synapse length is given by cieling of distance between cubes.
+        # adding synapses
         n_neurons = len(self.neurons)
         for isn, source_neuron in enumerate(self.neurons):
             sc = source_neuron.cube
             for _syn in range(source_neuron.code['synapses']):
                 while(True):
                     idn = random.randint(0, n_neurons - 1)
-                    if idn == isn:
+                    if idn == isn:  # avoids self-loops. larger loops are OK
                         continue
+
+                    # synapse length is given by cieling of distance between cubes.
                     destination_neuron = self.neurons[idn]
                     dc = destination_neuron.cube
                     distance = math.ceil(pow(
@@ -62,7 +65,10 @@ class Brain(threading.Thread):
                     prob_conn = random.random()
                     if prob_conn > source_neuron.code['dendron_length'][distance]:
                         continue
-                    source_neuron.add_synapse(Synapse(destination_neuron, weight=random.random()))
+
+                    source_neuron.add_synapse(
+                        Synapse(destination_neuron, weight=random.random(), distance=distance)
+                    )
                     break
 
     def getQuality(self):
@@ -90,13 +96,21 @@ class Brain(threading.Thread):
             if not self.start_event.isSet():
                 break  # to kill the thread.
             logging.debug('tick.')
-            self.neurons[0].addInput()
+            self.age += 1
+
+            # add activation to the first neuron.
+            self.neurons[0].addInput(0.3)  # THIS IS WHAT EYES SEE?
             for n in self.neurons:
                 n.tick()
-            self.direction = [self.neurons[-1].getOutput(), self.neurons[-2].getOutput()]
+            # get direction from output of last 2 neurons.
+            self.direction = [self.neurons[-1].output, self.neurons[-2].output]
             self.food -= 1
+            # report what's the current quality. Maybe it shoudl be more than that.
             Brain.actions.append(self.food)
             self.continue_event.wait()
+
+    def showBrain(self):
+        pass
 
     def prnt(self):
         print('q', self.getPosition(), self.getQuality())
