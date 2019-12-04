@@ -1,6 +1,10 @@
 Universe
-
+    show time on screen
+    enlarge screen
+    
 Brain
+    debug is a brain parameter set at init.
+    Get inputs to depend on environment
     add removeNeurons - ones that have no synapses?
     
 Neuron

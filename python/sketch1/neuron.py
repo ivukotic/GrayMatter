@@ -30,6 +30,10 @@ class Synapse:
         signal = self.pipeline.pop(0) * self.current_sensitivity
         self.neuron.addInput(signal)
 
+    def print(self):
+        pass
+        print('syn:', self.distance, self.weight, self.current_sensitivity, self.pipeline)
+
 
 class Neuron:
     """ """
@@ -67,3 +71,8 @@ class Neuron:
     def tick(self):
         self.calculate_output()
         self.generate_outputs()
+
+    def print(self):
+        print('cube', self.cube, self.input, self.output)
+        for synapse in self.synapses:
+            synapse.print()

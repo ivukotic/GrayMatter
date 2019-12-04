@@ -3,10 +3,10 @@ import random
 import math
 import threading
 import logging
+from tkinter import Tk, Canvas
 
 from code import Code
 from neuron import Neuron, Synapse
-
 
 logging.basicConfig(level=logging.DEBUG, format='(%(threadName)-10s) %(message)s', )
 
@@ -95,22 +95,24 @@ class Brain(threading.Thread):
             self.start_event.wait(5)
             if not self.start_event.isSet():
                 break  # to kill the thread.
-            logging.debug('tick.')
+
             self.age += 1
 
-            # add activation to the first neuron.
+            # add activation to the first two neurons.
             self.neurons[0].addInput(0.3)  # THIS IS WHAT EYES SEE?
-            for n in self.neurons:
-                n.tick()
+            self.neurons[1].addInput(0.3)
+            for neuron in self.neurons:
+                neuron.tick()
             # get direction from output of last 2 neurons.
             self.direction = [self.neurons[-1].output, self.neurons[-2].output]
             self.food -= 1
             # report what's the current quality. Maybe it shoudl be more than that.
             Brain.actions.append(self.food)
+
             self.continue_event.wait()
 
-    def showBrain(self):
-        pass
-
-    def prnt(self):
-        print('q', self.getPosition(), self.getQuality())
+    def print(self):
+        logging.debug('>>> age:' + str(self.age) + '\tquality:' + str(self.getQuality()))
+        # logging.debug('position:', self.getPosition(), '\tdirection:', self.getMove())
+        # for neuron in self.neurons:
+        # neuron.print()
