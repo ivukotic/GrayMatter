@@ -8,14 +8,10 @@ import pandas as pd
 from brain import Brain
 from code import Code
 
-from tools import Display
+from vizualize import Display
+import configuration as conf
 
 logging.basicConfig(level=logging.DEBUG, format='(%(threadName)-10s) %(message)s', )
-
-show = {
-    "Universe": 2,
-    "Brain": 2
-}
 
 
 class Universe:
@@ -37,6 +33,9 @@ class Universe:
         for _t in range(99):
             self.tick()
 
+    def __str__(self):
+        return '--- ' + str(self.apsolute_time) + ' ---'
+
     def init_graphics(self, scale=3):
         self.canvas = Canvas(tk, width=self.sx * scale, height=self.sy * scale)
         self.canvas.pack(fill="both", expand="yes")
@@ -51,14 +50,12 @@ class Universe:
             (x, y) = b.getPosition()
             self.balls.append(self.canvas.create_oval(x - 2, y - 2, x + 2, y + 2))
 
-        self.display = Display(self.population[0])
-
         tk.update()
 
     def create_brain(self, index):
         c = Code()
         c.initial_generation()
-        b = Brain('Br_' + str(index), c, self.start_event, self.continue_event)
+        b = Brain(index, c, self.start_event, self.continue_event)
         b.setPosition(random.randint(0, self.sx), random.randint(0, self.sy))
         self.population.append(b)
         b.start()
@@ -69,8 +66,9 @@ class Universe:
             if len(Brain.actions) == self.population_size:
                 break
         Brain.actions.clear()
-        if show['Universe'] == 1:
-            logging.debug('do actual collection')
+
+        # logging.debug('do actual collection')
+
         toRemove = []
         for bi, b in enumerate(self.population):
             # b.prnt()
@@ -104,14 +102,25 @@ class Universe:
         self.updateStates()
         self.start_event.clear()
         self.continue_event.set()
-        if show['Universe'] == 1:
-            logging.debug('Universe ticked:' + str(self.apsolute_time))
-        elif show['Universe'] == 2:
+
+        if conf.viz:
             self.showUniverse()
-        if show['Brain'] == 1:
-            self.population[0].print()
-        elif show['Brain'] == 2:
-            self.display.update()
+
+        self.print_out()
+        if conf.special_show_at == self.apsolute_time:
+            self.print_detailed()
+
+    def print_out(self):
+        _ind, level = conf.print_opt['Universe']
+        if level == 0:
+            return
+        print(self)
+        if level > 1:
+            print('population size:', len(self.population))
+
+    def print_detailed(self):
+        self.population[0].print_detailed()
+        Display(self.population[0])
 
     def showUniverse(self):
         ax = []

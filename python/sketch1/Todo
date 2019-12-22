@@ -1,5 +1,4 @@
 Universe
-    show time on screen
     enlarge screen
     
 Brain
@@ -11,6 +10,7 @@ Neuron
     add remove synapses - ones that had were flatlining.
 
 Visualization
+    Move all visualizations into vizualize
     visualize brains for debugging purposes (cubes, neurons, synapses. maybe in 2D ?)
     
 Population management

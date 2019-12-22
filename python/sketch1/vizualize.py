@@ -1,7 +1,6 @@
 from tkinter import Tk, Canvas
 from brain import Brain
 
-
 class Display:
     def __init__(self, obj):
         self.obj = obj
@@ -12,10 +11,8 @@ class Display:
         self.canvas.pack_propagate(0)
         self.show()
 
-    def show(self):
+    def show(self):  # not used
         if isinstance(self.obj, Brain):
-            print('brain')
-
-    def update(self):
-        self.canvas.create_oval(100, 100, 200, 200)
-        self.tk.update()
+            print('Drawing brain')
+            self.canvas.create_oval(100, 100, 200, 200)
+            self.tk.update()

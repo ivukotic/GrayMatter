@@ -9,36 +9,15 @@ add current signal to its neuron.
 """ synapse doc """
 
 from code import Code
-
-
-class Synapse:
-    """ """
-
-    def __init__(self, neuron, weight, distance=1, sensitivity_decay=0.95):
-        """ doc """
-        self.neuron = neuron  # destination neuron
-        self.distance = distance
-        self.weight = weight
-        self.current_sensitivity = 1
-        self.sensitivity_decay = sensitivity_decay
-        self.pipeline = [0] * distance  # for pipeline to work each tick must call signal once
-
-    def signal(self, signal):
-        self.pipeline.append(signal * self.weight)
-
-    def process(self):
-        signal = self.pipeline.pop(0) * self.current_sensitivity
-        self.neuron.addInput(signal)
-
-    def print(self):
-        pass
-        print('syn:', self.distance, self.weight, self.current_sensitivity, self.pipeline)
+import configuration as conf
+from synapse import Synapse
 
 
 class Neuron:
     """ """
 
-    def __init__(self, gencode, cube):
+    def __init__(self, ID, gencode, cube):
+        self.ID = ID
         self.code = gencode
         self.cube = cube
         self.current_threshold = 128
@@ -47,6 +26,9 @@ class Neuron:
         self.synapses = []
         self.input = 0
         self.output = 0
+
+    def __str__(self):
+        return "N" + str(self.ID)
 
     def add_synapse(self, synapse):
         self.synapses.append(synapse)
@@ -66,13 +48,23 @@ class Neuron:
 
     def generate_outputs(self):
         for synapse in self.synapses:
+            synapse.process()
             synapse.signal(self.output)
 
     def tick(self):
         self.calculate_output()
         self.generate_outputs()
 
-    def print(self):
-        print('cube', self.cube, self.input, self.output)
+    def print_out(self):
+        ni, nlevel = conf.print_opt['Neuron']
+        if ni == self.ID and nlevel > 0:
+            print('NEURON', self,
+                  '\tposition:', self.cube,
+                  '\tinput:', self.input,
+                  '\toutput:', self.output)
+            si, slevel = conf.print_opt['Synapse']
+            self.synapses[si].print_out()
+
+    def print_detailed(self):
         for synapse in self.synapses:
-            synapse.print()
+            synapse.print_out()
