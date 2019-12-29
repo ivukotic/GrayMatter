@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 from brain import Brain
 from code import Code
+from environment import Environment
 
 from vizualize import Display
 import configuration as conf
@@ -20,9 +21,10 @@ class Universe:
         # these two events start/restart brain threads processing.
         self.start_event = threading.Event()
         self.continue_event = threading.Event()
+        self.environment = Environment()
         self.sx = sx
         self.sy = sy
-        self.food = pd.DataFrame(np.fromfunction(lambda x, y: x * 2 + y * 2, [self.sx, self.sy]))
+        # self.food = pd.DataFrame(np.fromfunction(lambda x, y: x * 2 + y * 2, [self.sx, self.sy]))
         self.population_size = population_size
         self.population = []
         for _i in range(population_size):
@@ -86,10 +88,11 @@ class Universe:
                 ny = self.sy - 1
             elif ny <= 0:
                 ny = 0
-            # print(nx, ny, self.food[nx][ny])
-            b.addFood(self.food[nx][ny])
-            self.food[nx][ny] = 0
             b.setPosition(nx, ny)
+
+            (reward, view) = self.environment.get_response([x, y], [dx, dy])
+            print('pos:', nx, ny, 'direct:', dx, dy, reward, view)
+            b.addFood(reward)
 
         for i in sorted(toRemove, reverse=True):
             del toRemove[i]

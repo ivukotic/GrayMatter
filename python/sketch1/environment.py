@@ -18,9 +18,9 @@ class Environment:
         self.food[x][y] = 0
         # view is sum of five cells in direction -30 deg and +30 deg
         sin_dir = dy / dx
-        dir = math.asin(sin_dir)
-        dir1 = dir - 0.52
-        dir2 = dir + 0.52
+        dire = math.asin(sin_dir)
+        dir1 = dire - 0.52
+        dir2 = dire + 0.52
         dx1 = math.cos(dir1)
         dy1 = math.sin(dir1)
         dx2 = math.cos(dir2)

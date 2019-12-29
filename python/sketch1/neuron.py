@@ -6,8 +6,6 @@ Once output is calculated, it is given to all the synapses. synapses put in it a
 add current signal to its neuron.
 """
 
-""" synapse doc """
-
 from code import Code
 import configuration as conf
 from synapse import Synapse
