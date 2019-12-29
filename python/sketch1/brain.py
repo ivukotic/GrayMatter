@@ -13,9 +13,11 @@ logging.basicConfig(level=logging.DEBUG, format='(%(threadName)-10s) %(message)s
 
 
 class Brain(threading.Thread):
-
+    """ 
+    segmented in 3D cubes. Each cube can contain single neuron type.
+    for now simply add neurons. later this will need GA birth from two parents.
+    """
     actions = []  # class variable. used to return
-    """ for now simply add neurons. later this will need GA birth from two parents."""
 
     def __init__(self, ID, gencode, start_event, continue_event):
         threading.Thread.__init__(self, group=None, target=None, name=str(ID))
@@ -84,14 +86,17 @@ class Brain(threading.Thread):
     def getPosition(self):
         return self.position
 
-    def setPosition(self, x, y):
-        self.position = (x, y)
-
-    def addFood(self, food):
-        self.food += food
+    def setPosition(self, position):
+        self.position = position
 
     def getMove(self):
         return self.direction
+
+    def process_response(self, reward, view):
+        self.food += reward
+        # add activation to the first two neurons.
+        self.neurons[0].addInput(view[0])
+        self.neurons[1].addInput(view[1])
 
     def removeNeurons(self):
         return
@@ -104,9 +109,6 @@ class Brain(threading.Thread):
 
             self.age += 1
 
-            # add activation to the first two neurons.
-            self.neurons[0].addInput(0.3)  # THIS IS WHAT EYES SEE?
-            self.neurons[1].addInput(0.3)
             for neuron in self.neurons:
                 neuron.tick()
             # get direction from output of last 2 neurons.

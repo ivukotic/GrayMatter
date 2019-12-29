@@ -14,11 +14,26 @@ class Environment:
     def get_response(self, position, direction):
         (x, y) = position
         (dx, dy) = direction
+
+        nx = x + dx
+        ny = y + dy
+        if nx >= self.size_x:
+            nx = self.size_x - 1
+        elif nx <= 0:
+            nx = 0
+        if ny >= self.size_y:
+            ny = self.size_y - 1
+        elif ny <= 0:
+            ny = 0
+
         reward = self.food[x][y]
         self.food[x][y] = 0
+
         # view is sum of five cells in direction -30 deg and +30 deg
-        sin_dir = dy / dx
-        dire = math.asin(sin_dir)
+        tan_dir = 1
+        if dx != 0:
+            tan_dir = dy / dx
+        dire = math.atan(tan_dir)
         dir1 = dire - 0.52
         dir2 = dire + 0.52
         dx1 = math.cos(dir1)
@@ -27,15 +42,15 @@ class Environment:
         dy2 = math.sin(dir2)
         view = [0, 0]
         for i in [0, 1, 2, 3, 4]:
-            lx = x + dx1 * i
-            ly = x + dy1 * i
+            lx = int(x + dx1 * i)
+            ly = int(x + dy1 * i)
             if lx < 0 or lx >= self.size_x or ly < 0 or ly >= self.size_y:
                 break
             view[0] += self.food[lx][ly]
 
-            lx = x + dx2 * i
-            ly = x + dy2 * i
+            lx = int(x + dx2 * i)
+            ly = int(x + dy2 * i)
             if lx < 0 or lx >= self.size_x or ly < 0 or ly >= self.size_y:
                 break
             view[1] += self.food[lx][ly]
-        return [reward, view]
+        return [reward, [nx, ny], view]

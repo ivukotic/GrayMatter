@@ -1,10 +1,4 @@
-"""
-Neurons have synapses. Synapses describe destination Neuron, its distance, weight.
-Neuron has a simple input that sums up signals, so there is nothing to process inputs.
-On each tick, thresholded input is given to output and input maybe reset.
-Once output is calculated, it is given to all the synapses. synapses put in it a pipeline,
-add current signal to its neuron.
-"""
+""" only neuron class """
 
 from code import Code
 import configuration as conf
@@ -12,7 +6,13 @@ from synapse import Synapse
 
 
 class Neuron:
-    """ """
+    """
+    Neurons have synapses. Synapses describe destination Neuron, its distance, weight.
+    Neuron has a simple input that sums up signals, so there is nothing to process inputs.
+    On each tick, thresholded input is given to output and input maybe reset.
+    Once output is calculated, it is given to all the synapses. synapses put in it a pipeline,
+    add current signal to its neuron.
+    """
 
     def __init__(self, ID, gencode, cube):
         self.ID = ID

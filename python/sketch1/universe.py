@@ -3,8 +3,6 @@ import threading
 import logging
 from tkinter import Tk, Canvas, Label, StringVar, BOTTOM
 
-import numpy as np
-import pandas as pd
 from brain import Brain
 from code import Code
 from environment import Environment
@@ -18,15 +16,15 @@ logging.basicConfig(level=logging.DEBUG, format='(%(threadName)-10s) %(message)s
 class Universe:
     def __init__(self, sx=conf.Universe["size_x"], sy=conf.Universe['size_y'], population_size=conf.Universe['population_size']):
         self.apsolute_time = 0
-        # these two events start/restart brain threads processing.
-        self.start_event = threading.Event()
-        self.continue_event = threading.Event()
         self.environment = Environment()
         self.sx = sx
         self.sy = sy
-        # self.food = pd.DataFrame(np.fromfunction(lambda x, y: x * 2 + y * 2, [self.sx, self.sy]))
         self.population_size = population_size
         self.population = []
+
+        self.start_event = threading.Event()  # these two events start/restart brain threads processing.
+        self.continue_event = threading.Event()
+
         for _i in range(population_size):
             self.create_brain(_i)
 
@@ -58,7 +56,7 @@ class Universe:
         c = Code()
         c.initial_generation()
         b = Brain(index, c, self.start_event, self.continue_event)
-        b.setPosition(random.randint(0, self.sx), random.randint(0, self.sy))
+        b.setPosition([random.randint(0, self.sx), random.randint(0, self.sy)])
         self.population.append(b)
         b.start()
 
@@ -78,21 +76,11 @@ class Universe:
                 toRemove.append(bi)
             x, y = b.getPosition()
             dx, dy = b.getMove()
-            nx = x + dx
-            ny = y + dy
-            if nx >= self.sx:
-                nx = self.sx - 1
-            elif nx <= 0:
-                nx = 0
-            if ny >= self.sy:
-                ny = self.sy - 1
-            elif ny <= 0:
-                ny = 0
-            b.setPosition(nx, ny)
 
-            (reward, view) = self.environment.get_response([x, y], [dx, dy])
-            print('pos:', nx, ny, 'direct:', dx, dy, reward, view)
-            b.addFood(reward)
+            (reward, new_position, view) = self.environment.get_response([x, y], [dx, dy])
+            # print('pos:', nx, ny, 'direct:', dx, dy, 'reward:', reward, view)
+            b.setPosition(new_position)
+            b.process_response(reward, view)
 
         for i in sorted(toRemove, reverse=True):
             del toRemove[i]

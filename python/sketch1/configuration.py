@@ -2,7 +2,7 @@ Universe = {
     "size_x": 200,
     "size_y": 200,
     "population_size": 10,
-    "max_age": 99
+    "max_age": 9
 }
 viz = True  # show display
 
