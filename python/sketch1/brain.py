@@ -127,7 +127,8 @@ class Brain(threading.Thread):
                           + '\tposition:' + str(self.getPosition())
                           + '\tdirection:' + str(self.getMove()))
             ni, _nlevel = conf.print_opt['Neuron']
-            self.neurons[ni].print_out()
+            for n in ni:
+                self.neurons[n].print_out()
 
     def print_detailed(self):
         for neuron in self.neurons:

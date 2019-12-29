@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.DEBUG, format='(%(threadName)-10s) %(message)s
 
 
 class Universe:
-    def __init__(self, sx=200, sy=200, population_size=10):
+    def __init__(self, sx=conf.Universe["size_x"], sy=conf.Universe['size_y'], population_size=conf.Universe['population_size']):
         self.apsolute_time = 0
         # these two events start/restart brain threads processing.
         self.start_event = threading.Event()
@@ -30,7 +30,7 @@ class Universe:
 
         self.init_graphics()
 
-        for _t in range(99):
+        for _t in range(conf.Universe['max_age']):
             self.tick()
 
     def __str__(self):

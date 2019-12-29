@@ -38,17 +38,9 @@ class Synapse:
     def print_out(self):
         si, level = conf.print_opt['Synapse']
         if si == self.ID and level > 0:
-            print('SYNAPSE ', self,
-                  '\tdestination:', self.neuron,
-                  '\tdistance:', self.distance,
-                  '\tweight:', self.weight,
-                  '\tsensitivity:', self.current_sensitivity,
-                  '\tpipeline', self.pipeline)
+            print('SYNAPSE {} dest:{}  distance:{:d}  weight:{:6.3f} sensit: {:6.3f} pipe:{}'.format(
+                self, self.neuron, self.distance, self.weight, self.current_sensitivity, self.pipeline))
 
     def print_detailed(self):
-        print('SYNAPSE ', self,
-              '\tdestination:', self.neuron,
-              '\tdistance:', self.distance,
-              '\tweight:', self.weight,
-              '\tsensitivity:', self.current_sensitivity,
-              '\tpipeline', self.pipeline)
+        print('SYNAPSE {} dest:{}  distance:{:d}  weight:{:6.2f} sensit: {:6.2f} pipe:{}'.format(
+            self, self.neuron, self.distance, self.weight, self.current_sensitivity, self.pipeline))

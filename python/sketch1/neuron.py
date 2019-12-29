@@ -57,12 +57,11 @@ class Neuron:
 
     def print_out(self):
         ni, nlevel = conf.print_opt['Neuron']
-        if ni == self.ID and nlevel > 0:
-            print('NEURON', self,
-                  '\tposition:', self.cube,
-                  '\tinput:', self.input,
-                  '\toutput:', self.output)
-            si, slevel = conf.print_opt['Synapse']
+        if self.ID in ni and nlevel > 0:
+            print('NEURON {} position:{}  thresh.:{:6.2f}  input:{:6.3f} output: {:6.3f}'.format(
+                self, self.cube, self.current_threshold, self.input, self.output))
+
+            si, _slevel = conf.print_opt['Synapse']
             self.synapses[si].print_out()
 
     def print_detailed(self):

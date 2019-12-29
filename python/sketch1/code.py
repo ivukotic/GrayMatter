@@ -19,7 +19,7 @@ class Code():
                 "synapses": 5,
                 # probability of having dendron_length of 0, 1, 2 cubes.
                 "dendron_length": [0.5, 0.3, 0.2],  # does not have to be normalized, but each must be <1.
-                "leakage": 1,
+                "leakage": 0.2,
                 "random_signal_probability": .0001
             }
         ]

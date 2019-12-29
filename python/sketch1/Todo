@@ -17,3 +17,6 @@ Population management
     Every x populations report to ES best brains codes.
     Every y populations randomly swap few brains from different populations.
     
+How vision works?
+Should environment be separate class?
+Abstract brain functions (move) and env response (add food) - to actions, responses.
