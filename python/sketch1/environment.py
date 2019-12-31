@@ -15,6 +15,11 @@ class Environment:
         (x, y) = position
         (dx, dy) = direction
 
+        x = int(x)
+        y = int(y)
+        reward = self.food[x][y]
+        self.food[x][y] = 0
+
         nx = x + dx
         ny = y + dy
         if nx >= self.size_x:
@@ -25,9 +30,7 @@ class Environment:
             ny = self.size_y - 1
         elif ny <= 0:
             ny = 0
-
-        reward = self.food[x][y]
-        self.food[x][y] = 0
+        new_pos = [nx, ny]
 
         # view is sum of five cells in direction -30 deg and +30 deg
         tan_dir = 1
@@ -53,4 +56,5 @@ class Environment:
             if lx < 0 or lx >= self.size_x or ly < 0 or ly >= self.size_y:
                 break
             view[1] += self.food[lx][ly]
-        return [reward, [nx, ny], view]
+
+        return [reward, new_pos, view]

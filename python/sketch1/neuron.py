@@ -41,7 +41,7 @@ class Neuron:
         self.input -= self.leakage
         self.output = 0
         if self.input > self.current_threshold:
-            self.output = self.input
+            self.output = self.input % conf.Neuron['max_activation']
             self.input = 0
 
     def generate_outputs(self):

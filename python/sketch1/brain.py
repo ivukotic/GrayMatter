@@ -90,7 +90,9 @@ class Brain(threading.Thread):
         self.position = position
 
     def getMove(self):
-        return self.direction
+        vx = self.direction[0] / conf.Neuron['max_activation'] * conf.Brain['max_velocity']
+        vy = self.direction[1] / conf.Neuron['max_activation'] * conf.Brain['max_velocity']
+        return [vx, vy]
 
     def process_response(self, reward, view):
         self.food += reward

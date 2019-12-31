@@ -2,7 +2,7 @@ Universe = {
     "size_x": 200,
     "size_y": 200,
     "population_size": 10,
-    "max_age": 9
+    "max_age": 99
 }
 viz = True  # show display
 
@@ -12,6 +12,14 @@ print_opt = {
     "Brain": [1, 1],
     "Neuron": [[0, 1, 2], 1],
     "Synapse": [4, 1]
+}
+
+Brain = {
+    'max_velocity': 5
+}
+
+Neuron = {
+    'max_activation': 255
 }
 
 # print full brain 0 at this tick
