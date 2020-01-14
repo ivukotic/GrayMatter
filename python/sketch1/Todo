@@ -1,17 +1,24 @@
 Universe
     enlarge screen
-    
+    PRINTOUT AT THE END
+
+Environment
+    Environment should change by itself 
+    Add poison, walls etc.    
+
 Brain
     debug is a brain parameter set at init.
-    Get inputs to depend on environment
     add removeNeurons - ones that have no synapses?
     
 Neuron
-    AUTOGAIN IN SYNAPSES, OUTPUT.
+    RANDOM SIGNALS GENERATION
     add remove synapses - ones that had were flatlining.
 
+Synapse
+    GET CODE THAT ENCODES SYNAPSE's GAIN VS ACTIVITY profile
+
 Visualization
-    Move all visualizations into vizualize
+    PROPERLY DISPLAY FOOD
     visualize brains for debugging purposes (cubes, neurons, synapses. maybe in 2D ?)
     
 Population management

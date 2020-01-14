@@ -1,10 +1,17 @@
+
+special_show_at = 10 # print full brain 0 at this tick
+viz = True  # show display
+
 Universe = {
     "size_x": 200,
     "size_y": 200,
     "population_size": 10,
     "max_age": 99
 }
-viz = True  # show display
+
+Environment = {
+    "model": 1  # 0 - smooth gradient, 1- random squares
+}
 
 # list [index, debug level]. printed on each tick
 print_opt = {
@@ -21,6 +28,3 @@ Brain = {
 Neuron = {
     'max_activation': 255
 }
-
-# print full brain 0 at this tick
-special_show_at = 10

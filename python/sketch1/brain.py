@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.DEBUG, format='(%(threadName)-10s) %(message)s
 
 
 class Brain(threading.Thread):
-    """ 
+    """
     segmented in 3D cubes. Each cube can contain single neuron type.
     for now simply add neurons. later this will need GA birth from two parents.
     """
@@ -90,8 +90,8 @@ class Brain(threading.Thread):
         self.position = position
 
     def getMove(self):
-        vx = self.direction[0] / conf.Neuron['max_activation'] * conf.Brain['max_velocity']
-        vy = self.direction[1] / conf.Neuron['max_activation'] * conf.Brain['max_velocity']
+        vx = (self.direction[0] / conf.Neuron['max_activation'] - 0.5) * conf.Brain['max_velocity']
+        vy = (self.direction[1] / conf.Neuron['max_activation'] - 0.5) * conf.Brain['max_velocity']
         return [vx, vy]
 
     def process_response(self, reward, view):

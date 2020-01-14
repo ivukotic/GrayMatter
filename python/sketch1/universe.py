@@ -1,13 +1,13 @@
 import random
 import threading
 import logging
-from tkinter import Tk, Canvas, Label, StringVar, BOTTOM
+from tkinter import Tk, Label, StringVar, BOTTOM
 
 from brain import Brain
 from code import Code
 from environment import Environment
 
-from vizualize import Display
+from vizualize import platno
 import configuration as conf
 
 logging.basicConfig(level=logging.DEBUG, format='(%(threadName)-10s) %(message)s', )
@@ -36,21 +36,19 @@ class Universe:
     def __str__(self):
         return '--- ' + str(self.apsolute_time) + ' ---'
 
-    def init_graphics(self, scale=3):
-        self.canvas = Canvas(tk, width=self.sx * scale, height=self.sy * scale)
-        self.canvas.pack(fill="both", expand="yes")
-        self.canvas.pack_propagate(0)
+    def init_graphics(self):
+        self.display = platno()
 
         self.str_age = StringVar()
-        self.age_label = Label(self.canvas, textvariable=self.str_age, fg="black")
+        self.age_label = Label(self.display.canvas, textvariable=self.str_age, fg="black")
         self.age_label.pack(side=BOTTOM)
 
         self.balls = []
         for b in self.population:
             (x, y) = b.getPosition()
-            self.balls.append(self.canvas.create_oval(x - 2, y - 2, x + 2, y + 2))
+            self.balls.append(self.display.canvas.create_oval(x - 2, y - 2, x + 2, y + 2))
 
-        tk.update()
+        self.display.update()
 
     def create_brain(self, index):
         c = Code()
@@ -111,7 +109,6 @@ class Universe:
 
     def print_detailed(self):
         self.population[0].print_detailed()
-        Display(self.population[0])
 
     def showUniverse(self):
         ax = []
@@ -119,17 +116,12 @@ class Universe:
         asize = []
         for bi, b in enumerate(self.population):
             x, y = b.getPosition()
-            x *= 3
-            y *= 3
             size = b.getQuality()
-            self.canvas.coords(self.balls[bi], x - 2, y - 2, x + 2, y + 2)
+            self.display.canvas.coords(self.balls[bi], x - 2, y - 2, x + 2, y + 2)
         self.str_age.set('t: ' + str(self.apsolute_time))
-        tk.update()
+        self.display.update()
 
 
 if __name__ == "__main__":
 
-    tk = Tk()
-    tk.title("Universe")
-    # tk.mainloop()
     un = Universe()

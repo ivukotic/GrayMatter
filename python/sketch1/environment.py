@@ -3,13 +3,34 @@ import math
 import pandas as pd
 import numpy as np
 import configuration as conf
+from vizualize import platno
 
 
 class Environment:
     def __init__(self, size_x=conf.Universe["size_x"], size_y=conf.Universe['size_y']):
         self.size_x = size_x
         self.size_y = size_y
-        self.food = pd.DataFrame(np.fromfunction(lambda x, y: x * 2 + y * 2, [self.size_x, self.size_y]))
+        self.display = platno("Environment", self.size_x, self.size_y)
+        self.init()
+
+    def init(self):
+
+        # self.display.setTitle("Environment")
+        # self.display.setSize(self.size_x, self.size_y)
+
+        if conf.Environment['model'] == 0:
+            self.food = pd.DataFrame(np.fromfunction(lambda x, y: x * 2 + y * 2, [self.size_x, self.size_y]))
+        else:
+            self.food = pd.DataFrame(0, index=range(self.size_x), columns=range(self.size_y))
+
+        if conf.Environment['model'] == 1:
+            for i in range(10):
+                x1 = random.randint(0, self.size_x / 2)
+                x2 = random.randint(0, self.size_x / 2)
+                y1 = random.randint(0, self.size_y / 2)
+                y2 = random.randint(0, self.size_y / 2)
+                am = 10000 / math.fabs((x1 - x2) + 1 * (y1 - y2) + 1)
+                self.food.loc[x1:x2, y1:y2] = am
 
     def get_response(self, position, direction):
         (x, y) = position
@@ -18,7 +39,7 @@ class Environment:
         x = int(x)
         y = int(y)
         reward = self.food[x][y]
-        self.food[x][y] = 0
+        self.food.loc[x, y] = 0
 
         nx = x + dx
         ny = y + dy
