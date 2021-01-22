@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/ivukotic/GrayMatter#readme",
   "dependencies": {
-    "elasticsearch": "^16.2.0",
+    "elasticsearch": "^16.7.2",
     "express": "^4.17.1",
     "https": "^1.0.0"
   }
