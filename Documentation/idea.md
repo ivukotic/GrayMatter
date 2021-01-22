@@ -27,3 +27,5 @@ Approach
     * die when no energy left
     * energy is scarce
 
+* code
+    * need a "DNA" that governs development and work of the cells.  
